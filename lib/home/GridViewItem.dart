@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_demo/utils/extensions.dart';
 
 class GridViewItem extends StatelessWidget {
   const GridViewItem({Key? key}) : super(key: key);

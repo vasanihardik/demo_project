@@ -58,7 +58,8 @@ dependencies:
   cached_video_player_fork: ^2.1.1
   flutter_cache_manager: ^3.3.1
   pedantic: ^1.8.0+1
-  graphql_flutter: ^5.1.0
+  graphql: ^5.1.2
+  # graphql_flutter: ^5.1.0
  
   
 
@@ -74,7 +75,8 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   floor_generator: ^1.4.2
   freezed: any
-  build_runner: ^2.1.2
+  build_runner: ^2.4.8
+  graphql_codegen: ^0.13.11
 
 
 

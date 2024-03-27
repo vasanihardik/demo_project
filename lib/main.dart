@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,6 +58,7 @@ void main() async {
     projectId: "fir-notification-77c65",
   ));
 
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   print("Print ==========> $messaging");
 
@@ -72,6 +75,40 @@ void main() async {
   //If subscribe based sent notification then use this token
   final fcmToken = await messaging.getToken();
   print(" FCM Token ==>>>>>>> $fcmToken");
+
+  //If subscribe based on topic then use this
+  await messaging.subscribeToTopic('flutter_notification');
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  if (!kIsWeb) {
+    channel = const AndroidNotificationChannel(
+        'flutter_notification', // id
+        'flutter_notification_title', // title
+        importance: Importance.high,
+        enableLights: true,
+        enableVibration: true,
+        showBadge: true,
+        playSound: true);
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    const android =
+        AndroidInitializationSettings('@drawable/ic_notifications_icon');
+    //final iOS = const DarwinInitializationSettings();
+    const initSettings = InitializationSettings(android: android);
+
+    await flutterLocalNotificationsPlugin!.initialize(initSettings,
+        onDidReceiveNotificationResponse: notificationTapBackground,
+        onDidReceiveBackgroundNotificationResponse: notificationTapBackground);
+
+    await messaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
 
   runApp(RepositoryProvider<VideoControllerService>(
     create: (context) => CachedVideoControllerService(DefaultCacheManager()),

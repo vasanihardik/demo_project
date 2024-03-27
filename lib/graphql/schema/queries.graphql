@@ -1,0 +1,33 @@
+query GetData {
+  Graph_ql {
+    id,
+    name
+  }
+}
+
+mutation InsertData($id:Int,$name:String) {
+  insert_Graph_ql_one(object: {id: $id, name: $name}) {
+    name,
+    id
+  }
+}
+
+mutation DeleteData($id:Int) {
+  delete_Graph_ql(where: {id: {_eq: $id}}) {
+    returning {
+      id,
+      name
+    }
+  }
+}
+
+mutation UpdateTable($id:Int) {
+  update_Graph_ql(where: {id: {_eq: $id}}) {
+    returning {
+      id,
+      name
+    }
+  }
+}
+
+

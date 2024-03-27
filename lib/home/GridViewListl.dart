@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_demo/home/GridViewItem.dart';
-import 'package:quiz_demo/home/PotraiteViewItem.dart';
-import 'package:quiz_demo/home/SquareViewItem.dart';
 import 'package:quiz_demo/utils/extensions.dart';
 
 class GridListView extends StatelessWidget {
